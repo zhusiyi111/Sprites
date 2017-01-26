@@ -14,7 +14,7 @@ int main()
 	int row = 0, maxCol = 0;
 
 	for (int i = 0; i < aa.size(); i++){
-		imgs.push_back(imread(aa[i],-1));
+		imgs.push_back(imread(aa[i],1));
 		row += imgs[i].rows;
 		maxCol > imgs[i].cols ? maxCol : maxCol = imgs[i].cols;
 		cout << "cols:"<<imgs[i].cols <<"rows:"<< imgs[i].rows <<endl;
