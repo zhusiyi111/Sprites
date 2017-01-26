@@ -11,39 +11,29 @@ int main()
 
 	vector<string> aa = getFilesName("./image");
 	vector<Mat> imgs;
+	int row = 0, maxCol = 0;
+
 	for (int i = 0; i < aa.size(); i++){
-		imgs.push_back(imread(aa[i],1));
+		imgs.push_back(imread(aa[i],-1));
+		row += imgs[i].rows;
+		maxCol > imgs[i].cols ? maxCol : maxCol = imgs[i].cols;
+		cout << "cols:"<<imgs[i].cols <<"rows:"<< imgs[i].rows <<endl;
+		cout << row << "," << maxCol << endl;
 	}
 
 	Mat result;
-	int col = 0, row = 0;
-
+	result.create(row, maxCol, CV_8UC3);
+	
+	int nowCol = 0;
 	for (int i = 0; i < imgs.size(); i++){
 
-		if (result.empty()){
-			result = imgs[i];
-			col = result.cols;
-			row = result.rows;
-		}
-		else{
-			Mat temp, now = imgs[i];
-			int nowRow = now.rows,
-				nowCol = now.cols;
-			temp.create(row + nowRow, nowCol > col ? nowCol : col, CV_8UC3);
-			result.copyTo(temp(Rect(0, 0, row, col)));
-			
-			now.copyTo(temp(Rect(0, col, nowRow, nowCol)));
-			result = temp;
-			col = result.cols;
-			row = result.rows;
-			imshow(to_string(i + 666), result);
-			waitKey(0);
-		}
+		imgs[i].copyTo(result(Rect(0, nowCol, imgs[i].cols, imgs[i].rows)));
 
+		nowCol += imgs[i].rows;
 	
 	}
 	
-	
+	imshow("dassasa", result);
 	waitKey(0); 
 
 }
